@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Code Quiz</title>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-dark bg-dark text-light">
+      <div class="row">
+        <a class="col-4 text-light" href="#">View High Scores</a>
+        <h1 class="col-7">Code Quiz</h1>
+        <div class="col-1">
+            <span id="timeLeft"></span>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="jumbotron">
+      <h1 class="display-4">Test Your Knowledge!</h1>
+      <p class="lead">The following quiz will test your knowledge of basic familiarity with HTML, CSS, and JavaScript. The quicker you answer questions correctly, the higher your score will be! Be careful though, becuase if you get a question wrong, it will lower your score!</p>
+      <hr class="my-4">
+      <p>Want to play?</p>
+      <a class="btn btn-primary btn-lg" href="#" role="button">Start Quiz!</a>
+    </div>
+
+
+
+    <script>
+      var timeLeftEl = document.getElementById("timeLeft");
+
+      var totalSeconds = 75;
+      var secondsElapsed = 0;
+      var interval;
+
+
+
+
+
+    // Loop over every question object
+    for (var i = 0; i < questions.length; i++) {
+      // Display current question to user and ask OK/Cancel
+      var answer = confirm(questions[i].q);
+
+      // Compare answers
+      if ((answer === true && questions[i].a === "t") ||
+        (answer === false && questions[i].a === "f")) {
+        // Increase score
+        score++;
+        alert("Correct!");
+      }
+      else {
+        alert("Wrong!");
+      }
+    }
+
+      // The user arrives at the landing page and is presented with a call to action to "start quiz"
+      
+        function startPrompt () {
+        // when the user loads the page, we want the first thing
+        // that they see to be a pop up informing them about the 
+        // parameters of the game and a start button
+          
+
+
+
+        }
+
+        // start quiz window should include
+          // Title, coding quiz challenge
+            // Coding Quiz Challenge
+          // description of game, parameters, rules
+            // The following quiz will test your knowledge of basic familiarity with HTML, CSS, and JavaScript. The quicker you answer questions correctly, the higher your score will be! Get a question wrong, and you'll lower your score!
+            // Want to play?
+          // start button  
+            // this should have an event listener that when clicked starts the game
+      
+      // The main page should also have navigation options that lead to "view high scores" and "time",   
+      // which is preset to zero
+
+      // clicking the start quiz button
+        // add event listener to trigger upon start button click
+            // initiates startQuiz funciton
+                // presents the user a series of questions  
+        
+      // When EITHER
+        // all questions are answered OR
+        // time runs out,
+      // run endGame function
+      // the game ends and the score is calculated
+        // score is calculated by time remaining.
+        // correct answeres incur no penalty
+        // incorrect answers incur a penalty of 15 seconds being removed from the final score.
+      // the user is presented with their final score AND
+      // asked to enter their initials
+      // their final score and initials are stored in localStorage
+      
+    // we have five questions, so 15sec each, or 75 seconds for total play should be enough
+    
+    
+    
+    
+    </script>
+
+    <script src="./questions.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
