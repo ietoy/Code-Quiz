@@ -54,6 +54,20 @@
             </footer>
         <!-- end Quiz Area -->
         </div>
+        <!-- End Prompt -->
+        <div class="d-none" id="endPrompt">
+          <h1 class="display-4 text-center">You Did It!</h1>
+          <br>
+          <p class="lead text-center">Your final score is: <span class="display-5" id="finalScore"></span></p>
+            
+          <hr class="my-4">
+          <div class="text-center">
+            <p>Enter your initials to save your score to the leaderboard!</p>
+            <input class="rounded-lg text-center" placeholder="your initials here">
+            <button class="btn btn-primary" role="button" id="submit">Submit</button>
+        <!-- end End Prompt -->
+        </div>
+
       <!-- end jumbotron -->
       </div>
     <!-- end container -->
@@ -62,34 +76,51 @@
     <!-- This is the relevant JavaScript -->
     <script src="./questions.js"></script>
     <script>
-      var quizArea = document.getElementById("quizArea");
-      var questionsDisplay = document.getElementById("questionsDisplay");
-      var choicesDisplay = document.getElementById("choicesDisplay");
-      var firstQ = document.getElementById("firstQ");
-      var secondQ = document.getElementById("secondQ");
-      var thirdQ = document.getElementById("thirdQ");
-      var fourthQ = document.getElementById("fourthQ");
-      var questionNumber = document.getElementById("questionNumber");
-      var currentQuestion = 0;
-      var userAnswer;
-      var currentResponse = document.getElementById("response");
+      // VARIABLES
       var startPromptEl = document.getElementById("startPrompt");
       var startBtnEl = document.getElementById("startBtn");
-      var timeLeftEl = document.getElementById("timeLeft");
-      var totalSeconds = 75;
-      var secondsElapsed = 0;
-      var interval;
 
-      // This event listener starts functions once the "Start Quiz!" button is clicked.
+      var quizArea = document.getElementById("quizArea");
+        var timeLeftEl = document.getElementById("timeLeft");
+        var totalSeconds = 75;
+        var secondsElapsed = 0;
+        var interval;
+        var timeLeft;
+
+        var currentQuestion = 0;
+        var questionsDisplay = document.getElementById("questionsDisplay");
+        var choicesDisplay = document.getElementById("choicesDisplay");
+          var firstQ = document.getElementById("firstQ");
+          var secondQ = document.getElementById("secondQ");
+          var thirdQ = document.getElementById("thirdQ");
+          var fourthQ = document.getElementById("fourthQ");
+    
+        var userAnswer;
+        var currentResponse = document.getElementById("response");
+
+      var endPrompt = document.getElementById("endPrompt");
+      var finalScoreEl = document.getElementById("finalScore");
+      
+
+      
+
+      var submitBtn = document.getElementById("submit");
+
+
+
+
+
+
+      submitBtn.addEventListener("click", function() {
+        
+      });
+
+
+
+
+      // EVENT LISTENERS
       startBtnEl.addEventListener("click", startQuiz);  
-      // This function starts the Code Quiz
-        function startQuiz() {
-          startPromptEl.classList.add("d-none");
-          quizArea.classList.remove("d-none");
-          startTimer();
-          pullQuestion();
-        };
-
+      
       choicesDisplay.addEventListener("click", function (event) {
         if (event.target.matches("button")) {
           userAnswer = event.target.textContent;
@@ -101,11 +132,28 @@
           };
           if (currentQuestion < 4) {
             currentQuestion++
-          pullQuestion();
+            pullQuestion();
+          } else {
+            endGame();
           };
         };
       });
 
+      // FUNCTIONS
+      function endGame() {
+        quizArea.classList.add("d-none");
+        endPrompt.classList.remove("d-none");
+        var finalScore;
+        finalScore = timeLeft;
+        finalScoreEl.textContent = finalScore;
+        stopTimer();
+      };
+      function startQuiz() {
+          startPromptEl.classList.add("d-none");
+          quizArea.classList.remove("d-none");
+          startTimer();
+          pullQuestion();
+      };
       function wrongAnswer() {
         currentResponse.textContent = "WRONG!";
         secondsElapsed += 15;
@@ -113,7 +161,6 @@
       function rightAnswer() {
         currentResponse.textContent = "CORRECT!";
       };
-
       function pullQuestion() {
         questionsDisplay.textContent = "";
           questionsDisplay.textContent = questions[currentQuestion].title;
@@ -122,15 +169,6 @@
             thirdQ.textContent = questions[currentQuestion].choices[2];
             fourthQ.textContent = questions[currentQuestion].choices[3];
       };
-
-        // from showTimeLeft 
-        // if (secondsElapsed >= totalSeconds) {
-        //   stopTimer(); 
-        //   }
-
-
-      // IFF currentQuestion exceeds 5 then end game
-
       function startTimer () {
         interval = setInterval( function() {
             secondsElapsed++;
@@ -138,12 +176,15 @@
         }, 1000);
       };
       function calcTimeLeft () {
-        var timeLeft;
+        // var timeLeft;
           timeLeft = totalSeconds - secondsElapsed;
           return timeLeft;
       };
       function showTimeLeft() {
         timeLeftEl.textContent = calcTimeLeft();
+        if (secondsElapsed >= totalSeconds) {
+          endGame(); 
+          };
       };
       function stopTimer() {
           secondsElapsed = 0;
