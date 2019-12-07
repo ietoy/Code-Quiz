@@ -63,7 +63,7 @@
           <hr class="my-4">
           <div class="text-center">
             <p>Enter your initials to save your score to the leaderboard!</p>
-            <input class="rounded-lg text-center" placeholder="your initials here">
+            <input id="userName" class="rounded-lg text-center" placeholder="your initials here"/>
             <button class="btn btn-primary" role="button" id="submit">Submit</button>
         <!-- end End Prompt -->
         </div>
@@ -100,25 +100,40 @@
 
       var endPrompt = document.getElementById("endPrompt");
       var finalScoreEl = document.getElementById("finalScore");
-      
-
-      
-
       var submitBtn = document.getElementById("submit");
+     
 
 
 
+      // EVENT LISTENERS
+
+      submitBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        var userName = document.querySelector("#userName").value;
+        var userScore = finalScoreEl.textContent;
+        console.log(userName);
+        console.log(userScore);
+
+        localStorage.setItem("userName", username);
+        localStorage.setItem("userScore", userScore)
 
 
-
-      submitBtn.addEventListener("click", function() {
-        
       });
 
 
 
 
-      // EVENT LISTENERS
+
+
+
+
+
+
+
+
+
+
       startBtnEl.addEventListener("click", startQuiz);  
       
       choicesDisplay.addEventListener("click", function (event) {
