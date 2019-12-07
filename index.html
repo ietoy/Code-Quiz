@@ -4,21 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Code Quiz</title>
   </head>
-
   <body>
     <nav class="navbar navbar-dark bg-dark text-light">
       <a class="text-light float-left" href="#">View High Scores</a>
       <h1>Code Quiz</h1>
       <div class="float-right"><span id="timeLeft"></span></div>
     </nav>
-
     <!-- This jumbotron container is where the start prompt and quiz are displayed -->
     <div class="container mt-3">
       <div class="jumbotron">
-
-        <!-- This div contains the start prompt display. This is hidden once the startBtn is pressed. -->
+        <!-- This div contains the Start Prompt-->
         <div id="startPrompt" class="">
           <h1 class="display-4 text-center">Test Your Knowledge!</h1>
           <br>
@@ -28,113 +26,111 @@
             <p>Want to play?</p>
             <button class="btn btn-primary btn-lg" role="button" id="startBtn">Start Quiz!</button>
           </div>
+        <!-- end Start Prompt -->
         </div>
-        
-
-
+        <!-- this div contains the Quiz Area -->
         <div id="quizArea" class="d-none">
-
-          <div>
-            <h2 class="display-4">questionNumberHere</h2>
-          </div>
-
-          <div id="questionDisplay">
-            <!-- textContent will be pushed here based on the question being asked -->
-          </div>
-          
-          <div id="choicesDisplay">
+          <h4 class="display-4 text-center">
+            <!-- this div is the Question Display -->
+            <div id="questionsDisplay"></div>
+          </h4>
+          <br>
+          <hr>
+          <br>
             <!-- choices will be displayed here based on the question being asked -->
-          </div>
-
+            <div class="text-center" id="choicesDisplay">
+              <button class="btn btn-primary btn-lg" id="firstQ"></button>
+              <button class="btn btn-primary btn-lg" id="secondQ"></button>
+              <button class="btn btn-primary btn-lg" id="thirdQ"></button>
+              <button class="btn btn-primary btn-lg" id="fourthQ"></button>
+              <br>
+            <!-- end choicesDisplay -->
+            </div>
+          <br>
+          <hr>
+            <footer class="display-4">
+              <!-- this div contains the Response -->
+              <div id="response"></div> 
+            </footer>
+        <!-- end Quiz Area -->
         </div>
-      
-
-
+      <!-- end jumbotron -->
       </div>
+    <!-- end container -->
     </div>
 
-    
-    
-    
-
+    <!-- This is the relevant JavaScript -->
+    <script src="./questions.js"></script>
     <script>
+      var quizArea = document.getElementById("quizArea");
+      var questionsDisplay = document.getElementById("questionsDisplay");
+      var choicesDisplay = document.getElementById("choicesDisplay");
+      var firstQ = document.getElementById("firstQ");
+      var secondQ = document.getElementById("secondQ");
+      var thirdQ = document.getElementById("thirdQ");
+      var fourthQ = document.getElementById("fourthQ");
+      var questionNumber = document.getElementById("questionNumber");
+      var currentQuestion = 0;
+      var userAnswer;
+      var currentResponse = document.getElementById("response");
+      var startPromptEl = document.getElementById("startPrompt");
+      var startBtnEl = document.getElementById("startBtn");
       var timeLeftEl = document.getElementById("timeLeft");
       var totalSeconds = 75;
       var secondsElapsed = 0;
       var interval;
 
-      var startPromptEl = document.getElementById("startPrompt");
-      var startBtnEl = document.getElementById("startBtn");
-      
-      var quizArea = document.getElementById("quizArea");
-      var questionDisplay = document.getElementById("questionDisplay");
-      var choicesDisplay = document.getElementById("choicesDisplay");
-
-
-      // Troubleshooting w/ Chris
-
-      // var questionsEl=document.getElementById("questions");
-      // var answersEl=document.getElementById("answers");
-
-      // var qCount =0;
-
-      // function renderqa() {
-      //   questionsEl.innerHTML = “”;
-      //   answersEl.innerHTML = “”;
-
-      //   questionsEl.textContent = questions[qCount].title;
-      //     for (var i = 0; i < questions[qCount].choices.length; i++) {       
-      //       var li = document.createElement(“li”);
-      //       li.innerHTML = “<button class=btn-primary btn-lg>” + questions[qCount].choices[i] + “</button>“;
-      //       answersEl.appendChild(li);
-      //     }
-
-      //     // THIS IS THE HOLY GRAIL
-      //     // PUT THIS IN THE FOR LOOP
-      //       if (event.target.innerHTML !== question.answer) {
-      //         console.log("NO BUENO!!!");
-      //       })
-
-      //       var userAnswer;
-      //       userAnswer = event.target.match("button").innerHTML
-      //   qCount++;
-      // };
-
-      // if underneath for loop
-      // .addEventListener()
-
-      // this goes in the if
-      // userAnswer = questions[qCount].answer;
-      
-      // end troubleshooting w/ chris
-
-      var questionNumber = 0;
-
-      function runQuiz() {
-        for (var i = 0; i < questions.length; i++) {
-          
+      // This event listener starts functions once the "Start Quiz!" button is clicked.
+      startBtnEl.addEventListener("click", startQuiz);  
+      // This function starts the Code Quiz
+        function startQuiz() {
+          startPromptEl.classList.add("d-none");
+          quizArea.classList.remove("d-none");
+          startTimer();
+          pullQuestion();
         };
 
-        questionNumber++
-      }
-
-
-
-
-      // This event listener starts functions once the "Start Quiz!" button is clicked.
-      startBtnEl.addEventListener("click", function() {
-        startQuiz();
+      choicesDisplay.addEventListener("click", function (event) {
+        if (event.target.matches("button")) {
+          userAnswer = event.target.textContent;
+          if(userAnswer !== questions[currentQuestion].answer) {
+            wrongAnswer();
+          } 
+          else if (userAnswer === questions[currentQuestion].answer) {
+            rightAnswer();
+          };
+          if (currentQuestion < 4) {
+            currentQuestion++
+          pullQuestion();
+          };
+        };
       });
-      
 
-    // This function starts the code quiz
-      function startQuiz() {
-        startPromptEl.classList.add("d-none");
-        quizArea.classList.remove("d-none");
-        startTimer();
-      }
-      
-    // These functions operate the timer
+      function wrongAnswer() {
+        currentResponse.textContent = "WRONG!";
+        secondsElapsed += 15;
+      };
+      function rightAnswer() {
+        currentResponse.textContent = "CORRECT!";
+      };
+
+      function pullQuestion() {
+        questionsDisplay.textContent = "";
+          questionsDisplay.textContent = questions[currentQuestion].title;
+            firstQ.textContent = questions[currentQuestion].choices[0];
+            secondQ.textContent = questions[currentQuestion].choices[1];
+            thirdQ.textContent = questions[currentQuestion].choices[2];
+            fourthQ.textContent = questions[currentQuestion].choices[3];
+      };
+
+        // from showTimeLeft 
+        // if (secondsElapsed >= totalSeconds) {
+        //   stopTimer(); 
+        //   }
+
+
+      // IFF currentQuestion exceeds 5 then end game
+
       function startTimer () {
         interval = setInterval( function() {
             secondsElapsed++;
@@ -145,23 +141,16 @@
         var timeLeft;
           timeLeft = totalSeconds - secondsElapsed;
           return timeLeft;
-      }
+      };
+      function showTimeLeft() {
+        timeLeftEl.textContent = calcTimeLeft();
+      };
       function stopTimer() {
           secondsElapsed = 0;
           clearInterval(interval);
-      }   
-      function showTimeLeft() {
-        timeLeftEl.textContent = calcTimeLeft();
-        if (secondsElapsed >= totalSeconds) {
-          alert("Times up! Lets see how you did...");
-          stopTimer(); 
-        //   endGame(); //define this too!!
-          }
-      }   
-    
+      };   
     </script>
 
-<script src="./questions.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
